@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+
+{% block pagetitle %}Manage API Access{% endblock %}
+
+{% block content %}
+    <style>
+        th {
+            background-color: #fafafa;
+            color: black;
+        }
+        th:hover {background-color:#f5f5f5;}
+    </style>
+    <h2>Current API Access Configuration</h2>
+    <p>These settings are managed in settings.py and changign them will require restarting the application:</p>
+    <br />
+    <table style="width:55%;border: none; margin-left: 22.5%;margin-top: 20px" align="center">
+        <tr>
+            <th>VirusTotal API Key</th>
+            <td>{{ virustotal_api_key }}</td>
+        </tr>
+        <tr>
+            <th>Sleep Time</th>
+            <td>{{ sleep_time }} seconds</td>
+        </tr>
+    </table>
+{% endblock %}

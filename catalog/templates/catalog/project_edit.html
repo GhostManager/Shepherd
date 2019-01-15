@@ -1,0 +1,23 @@
+{% extends "base_generic.html" %}
+
+{% block pagetitle %}Edit History Entry{% endblock %}
+
+{% block content %}
+    <style>
+        th {
+            background-color: #fafafa;
+            color: black;
+        }
+        th:hover {background-color:#f5f5f5;}
+    </style>
+    <h2>Editing History: {{ history_instance.domain.name }}</h2>
+    <p>Modify as necessary and then click Save:</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <br />
+        <input type="submit" class="button" value="Save">
+    </form>
+{% endblock %}

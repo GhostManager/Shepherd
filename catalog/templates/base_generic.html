@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    {% block title %}<title>Shepherd</title>{% endblock %}
+
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Add additional CSS in static file -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'jquery/jquery-ui.css' %}">
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <!-- jQuery UI for Datepicker -->
+    <script src="{% static 'jquery/external/jquery/jquery.js' %}"></script>
+    <script src="{% static 'jquery/jquery-ui.js' %}"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Sidebar Holder -->
+        <nav id="sidebar">
+            <!-- Sidebar Top Section -->
+            <div class="sidebar-header">
+                <h3><a href="{% url 'index' %}">Shepherd</a></h3>
+            </div>
+
+            <!-- Search Bar -->
+            <ul class="list-unstyled components">
+                <div class="search">
+                    <form action="{% url 'domains' %}" method="GET">
+                        <span class="fa fa-search"></span>
+                        <input type="text" name="domain_search" placeholder="Search domains">
+                        <input type="submit" style="display: none" />
+                    </form>
+                </div>
+            </ul>
+
+            <!-- Domain Management Section -->
+            <ul class="list-unstyled components">
+                <p>Manage Domains</p>
+                <li>
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Domain Catalog</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'my-domains' %}">My Domains</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'available-domains' %}">Available Domains</a></li>
+                        <li><a href="{% url 'active-domains' %}">Active Domains</a></li>
+                        <li><a href="{% url 'reserved-domains' %}">Reserved Domains</a></li>
+                        <li><a href="{% url 'domains' %}">All Domains</a></li>
+                        <li><a href="{% url 'graveyard' %}">The Graveyard</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#domainSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Add Domains</a>
+                    <ul class="collapse list-unstyled" id="domainSubmenu">
+                        <li><a href="{% url 'domain_create' %}">Add New Domains</a></li>
+                        <li><a href="{% url 'upload_csv' %}">Upload New Domains</a></li>
+                    </ul>
+                    </li>
+                <li>
+                    <a href="#checkSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Manage Updates</a>
+                    <ul class="collapse list-unstyled" id="checkSubmenu">
+                        <li><a href="{% url 'update' %}">Update Categories</a></li>
+                        <li><a href="{% url 'update_dns' %}">Update DNS Records</a></li>
+                        <li><a href="{% url 'management' %}">Review API Keys</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Admin Section -->
+            <ul class="list-unstyled components">
+                <p>Manage Site</p>
+                <li>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Administration</a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li><a href="/admin/auth/user/">Users</a></li>
+                        <li><a href="/admin/catalog/domain/">Domains</a></li>
+                        <li><a href="/admin">Admin Panel</a></li>
+                    </ul>
+                </li>
+
+                <!-- Documentation Section -->
+                <li>
+                    <a href="#docsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Documentation</a>
+                    <ul class="collapse list-unstyled" id="docsSubmenu">
+                        <li><a href="https://github.com/GhostManager/Shepherd/wiki">Shepherd Wiki</a></li>
+                        <li><a href="https://github.com/GhostManager/DomainCheck/wiki">DomainCheck Wiki</a></li>
+                    </ul>
+                </li>
+
+                <!-- Git Section -->
+                <li>
+                    <a href="#gitSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Source Code</a>
+                    <ul class="collapse list-unstyled" id="gitSubmenu">
+                        <li><a href="https://github.com/GhostManager/Shepherd">Shepherd</a></li>
+                        <li><a href="https://github.com/GhostManager/DomainCheck">DomainCheck</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Sidebar Buttons -->
+            <ul class="list-unstyled CTAs">
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout'%}?next={{request.path}}" class="article">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'login'%}?next={{request.path}}" class="article">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        <!-- Page Content Holder -->
+        <div id="content">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="navbar-btn">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-align-justify"></i>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <li class="nav-item active">
+                                {% if user.is_authenticated %}
+                                    {% if user.get_full_name %}
+                                        <a class="nav-link" href="{% url 'profile' %}">User: {{ user.get_full_name }}</a>
+                                    {% else %}
+                                        <a class="nav-link" href="{% url 'profile' %}">User: {{ user.get_username }}</a>
+                                    {% endif %}
+                                {% else %}
+                                    <p>{% block pagetitle %}{% endblock %}</p>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Page Content Goes Here -->
+            <div>
+                {% block content %}{% endblock %}
+                {% block pagination %}
+                    {% if is_paginated %}
+                        <div class="pagination">
+                            <span class="page-links">
+                                <span class="page-current">
+                                    <br />
+                                    <p>
+                                        {% if page_obj.has_previous %}
+                                            <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">< </a>
+                                        {% endif %}
+                                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                                        {% if page_obj.has_next %}
+                                            <a href="{{ request.path }}?page={{ page_obj.next_page_number }}"> ></a>
+                                        {% endif %}
+                                    </p>
+                                </span>
+                            </span>
+                        </div>
+                    {% endif %}
+                {% endblock %} 
+            </div>
+        </div>
+    </div>
+
+    <!-- Script for opening and closing the sidebar -->
+    <script>
+        $(document).ready(function() {
+            $("#sidebarCollapse").on("click", function() {
+                $("#sidebar").toggleClass("active");
+                $(this).toggleClass("active");
+            });
+        });
+    </script>
+    {% block morescripts %}{% endblock %}
+</body>
+
+</html>

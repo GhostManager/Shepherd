@@ -1,0 +1,113 @@
+{% extends "base_generic.html" %}
+
+{% block pagetitle %}Domain Entry{% endblock %}
+
+{% block content %}
+    <style>
+        th {
+            background-color: #fafafa;
+            color: black;
+        }
+        th:hover {background-color:#f5f5f5;}
+        input[type="file"] {
+            position: absolute;
+            left: 0;
+            opacity: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .csvdiv {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ccc;
+            border: 3px dotted #bebebe;
+            border-radius: 10px;
+        }
+
+        .csvlabel {
+            display: inline-block;
+            position: relative;
+            height: 100px;
+            width: 400px;
+        }
+        
+        .csvdiv.dragover {
+            background-color: #aaa;
+        }
+    </style>
+
+    <!-- File Upload -->
+    <h2>Upload Domain CSV</h2>
+    <p>Upload a csv file containing your domain information:</p>
+    <form action="{% url 'upload_csv' %}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="csv_file" class="csvlabel">
+                <div class="csvdiv">Click or drop your csv file here</div>
+                <input type="file" id="csv_file" name="csv_file" required="True"> 
+            </label>
+            <p id="filename"></p>
+        </div>
+        <div class="form-group">
+            <div style="text-align: center"></div>
+                <button class="button">Upload</button>
+            </div> 
+        </div>
+    </form>
+
+    <!-- Section for Flash Messages -->
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Section for Instructions -->
+    <h2 style="margin-top: 20px">Instructions</h2>
+    <div>
+        <p>Your csv file must have these headers:</p>
+        <div style="width: 50%; margin: 0 auto">
+            <p style="margin: 5px">
+                <em>
+                    name, registrar, health_status, health_dns, dns_record, whois, creation, expiration, all_cat, ibm_xforce_cat, talos_cat, bluecoat_cat, fortiguard_cat, opendns_cat, trendmicro_cat, mx_toolbox_status, note
+                </em>
+            </p>
+        </div>
+        <p>Download a with the headers and an example entry:</p>
+        {% load static %}
+        <a href="{% static 'files/template.csv' %}" style="margin: 20px" class="button">Download Template</a>
+        <div style="border: 1px solid black;width: 50%; margin: 0 auto">
+            <p>
+                <strong>Note: </strong>
+                DomainCheck outputs a csv in this format if you want to preload health status with your domains. You may then optionally add a "note" column.
+            </p>
+        </div>
+    </div>
+
+    <!-- Script for Upload Form -->
+    {% block morescripts %}
+        <script>
+            $('input[type=file]').on('change', function() {
+            $("#filename").text($(this).val());
+            });
+
+            $('input[type=file]').on('dragenter', function() {
+                $('csvdiv').addClass('dragover');
+            });
+
+            $('input[type=file]').on('dragleave', function() {
+                $('csvdiv').removeClass('dragover');
+            });
+        </script>
+    {% endblock %}
+{% endblock %}

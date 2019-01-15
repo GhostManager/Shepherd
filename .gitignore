@@ -6,3 +6,5 @@
 
 # VS Code stuff
 .vscode/*
+
+*.lock

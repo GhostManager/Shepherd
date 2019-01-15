@@ -1,0 +1,53 @@
+{% extends "base_generic.html" %}
+
+{% block pagetitle %}Your Checked-out Domains{% endblock %}
+
+{% block content %}
+    <h2>Active Domains for {{ request.user.get_username }}</h2>
+    {% if history_list %}
+        <p>The following domains are currently checked-out for your account:</p>
+        <br />
+        <table>
+            <tr>
+                <th>Domain</th>
+                <th>Check-in Date</th>
+                <th>Health</th>
+                <th>DNS Health</th>
+                <th>Whois Privacy</th>
+                <th>Notes</th>
+                <th style="text-align: center">Release</th>
+            </tr>
+            {% for entry in history_list %}
+                <tr>
+                    <td><a href="{{ entry.domain.get_absolute_url }}">{{ entry.domain.name }}</a></td>
+
+                    <td class="{% if entry.is_overdue %}text-danger{% endif %}">{{ entry.end_date }}</td>
+
+                    {% if entry.domain.health_status.health_status == "Healthy" %}
+                        <td style="color: green">{{ entry.domain.health_status }}</td>
+                    {% else %}
+                        <td style="color: red">{{ entry.domain.health_status }}</td>
+                    {% endif %}
+
+                    {% ifequal entry.domain.health_dns "Healthy" %}
+                        <td style="color: green">{{ entry.domain.health_dns }}</td>
+                    {% else %}
+                        <td style="color: red">{{ entry.domain.health_dns }}</td>
+                    {% endifequal %}
+
+                    {% ifequal entry.domain.whois "Enabled" %}
+                        <td style="color: green">{{ entry.domain.whois }}</td>
+                    {% else %}
+                        <td style="color: red">{{ entry.domain.whois }}</td>
+                    {% endifequal %}
+
+                    <td>{{ entry.domain.note }}</td>
+
+                    <td style="text-align: center"><a href="{% url 'release' entry.domain.id %}" class="button">Release</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>There are no domains currently checked-out for your account.</p>
+    {% endif %}
+{% endblock %}

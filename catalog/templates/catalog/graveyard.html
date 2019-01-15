@@ -1,0 +1,61 @@
+{% extends "base_generic.html" %}
+
+{% block pagetitle %}The Graveyard, Home of Domains Past{% endblock %}
+
+{% block content %}
+    <h2>The Graveyard</h2>
+    {% if domain_list %}
+        <p>Visit domains from the past who are now at rest:</p>
+        <br />
+        <table>
+            <tr>
+                <th>Domain</th>
+                <th>Status</th>
+                <th>Health</th>
+                <th>DNS Health</th>
+                <th>Whois Privacy</th>
+                <th>Purchase Date</th>
+                <th>Notes</th>
+            </tr>
+            {% for domain in domain_list %}
+                <tr>
+                    <td><a href="{{ domain.get_absolute_url }}">{{ domain.name }}</a></td>
+
+                    {% if domain.domain_status.domain_status == "Available" %}
+                        <td style="color: green">{{ domain.domain_status }}</td>
+                    {% else %}
+                        <td style="color: red">{{ domain.domain_status }}</td>
+                    {% endif %}
+
+                    {% if domain.health_status.health_status == "Healthy" %}
+                        <td style="color: green">{{ domain.health_status }}</td>
+                    {% else %}
+                        <td style="color: red">{{ domain.health_status }}</td>
+                    {% endif %}
+
+                    {% ifequal domain.health_dns "Healthy" %}
+                        <td style="color: green">{{ domain.health_dns }}</td>
+                    {% else %}
+                        <td style="color: red">{{ domain.health_dns }}</td>
+                    {% endifequal %}
+
+                    {% ifequal domain.whois "Enabled" %}
+                        <td style="color: green">{{ domain.whois }}</td>
+                    {% else %}
+                        <td style="color: red">{{ domain.whois }}</td>
+                    {% endifequal %}
+
+                    <td>{{ domain.creation }}</td>
+
+                    <td>{{ domain.note }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>There are no domains marked as burned yet. Good work?</p>
+    {% endif %}
+    {% load static %}
+    <div style="margin:35px;">
+        <img src="{% static 'images/tombstone.png' %}" alt="SpecterOps Logo" style="width:15%;">
+    </div>
+{% endblock %}

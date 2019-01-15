@@ -2,7 +2,7 @@
 
 [![Python Version](https://img.shields.io/badge/Python-3.7-brightgreen.svg)](.) [![License](https://img.shields.io/badge/License-BSD3-darkred.svg)](.)
 
-![Shepherd](https://github.com/GhostManager/Shepherd/raw/master/Shepherd.png)
+![Shepherd](https://github.com/GhostManager/Shepherd/raw/master/Shepherd.jpg)
 
 Shepherd is a Django application written in Python 3.7 and is designed to be used by a team of operators. It keeps track of domain names and each domain's current DNS settings, categorization, project history, and status. The tracked statuses include which domains are: ready to be used, burned/retired, or in use, and which team member checked out each of the active domains.
 

@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+
+{% block pagetitle %}Shepherd, Domain Management Made Simple{% endblock %}
+
+{% block content %}
+    {% load static %}
+    <div style="margin:35px;">
+        <img src="{% static 'images/logo.png' %}" alt="SpecterOps Logo" style="width:55%;">
+    </div>
+    <p>Shepherd is is tracking the following domain records:</p>
+    <table style="width:35%;border: none; margin-left: 32.5%;" align="center">
+        {% if user.is_authenticated %}
+            <tr>
+                <td style="border-bottom: 0"><a href="{% url 'my-domains' %}">Domains Checked-out by You</a></td><td style="border-bottom: 0;text-align: right" >{{ num_domains_out }}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <td style="border-bottom: 0"><a href="{% url 'domains' %}">All Domains</a></td><td style="border-bottom: 0;text-align: right" >{{ num_domains }}</td>
+        </tr>
+        <tr>
+            <td style="border-bottom: 0"><a href="{% url 'available-domains' %}">Available Domains</a></td><td style="border-bottom: 0;text-align: right">{{ num_domains_available }}</td>
+        </tr>
+        <tr>
+            <td style="border-bottom: 0"><a href="{% url 'active-domains' %}">Active Domains</a></td><td style="border-bottom: 0;text-align: right">{{ num_domains_unavailable }}</td>
+        </tr>
+        <tr>
+            <td style="border-bottom: 0"><a href="{% url 'reserved-domains' %}">Parked Domains</a></td><td style="border-bottom: 0;text-align: right">{{ num_domains_reserved }}</td>
+        </tr>
+        <tr>
+            <td style="border-bottom: 0"><a href="{% url 'graveyard' %}">Ghosts</a></td><td style="border-bottom: 0;text-align: right">{{ num_domains_burned }}</td>
+        </tr>
+    </table>
+{% endblock %}

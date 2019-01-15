@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+
+{% block pagetitle %}User Profile{% endblock %}
+
+{% block content %}
+    <style>
+        th {
+            background-color: #fafafa;
+            color: black;
+        }
+        th:hover {background-color:#f5f5f5;}
+    </style>
+    <!-- User Profile Section -->
+    <h2>User Profile</h2>
+    <table style="width:35%;border: none; margin-left: 32.5%;margin-top: 20px" align="center">
+        <tr>
+            <th>Username</th>
+            <td>{{ user.username }}</td>
+        <tr>
+            <th>Full Name</th>
+            <td>{{ user.first_name }} {{ user.last_name }}</td>
+        <tr>
+            <th>Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>Group Membership</th>
+            <td>
+                {% for g in user.groups.all %}
+                    {{ g.name|capfirst }}
+                    <br />
+               {% endfor %}
+            </td>
+        </tr>
+    </table>
+{% endblock %}

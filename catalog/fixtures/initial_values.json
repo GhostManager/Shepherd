@@ -1,0 +1,107 @@
+[
+  {
+    "model": "catalog.whoisstatus",
+    "pk": 1,
+    "fields": {
+        "whois_status": "Enabled"
+    }
+  },
+  {
+    "model": "catalog.whoisstatus",
+    "pk": 2,
+    "fields": {
+        "whois_status": "Disabled"
+    }
+  },
+  {
+    "model": "catalog.whoisstatus",
+    "pk": 3,
+    "fields": {
+        "whois_status": "Unknown"
+    }
+  },
+  {
+    "model": "catalog.activitytype",
+    "pk": 1,
+    "fields": {
+        "activity": "Command and Control"
+    }
+  },
+  {
+    "model": "catalog.activitytype",
+    "pk": 2,
+    "fields": {
+        "activity": "Phishing"
+    }
+  },
+  {
+    "model": "catalog.projecttype",
+    "pk": 1,
+    "fields": {
+        "project_type": "Red Team"
+    }
+  },
+  {
+    "model": "catalog.projecttype",
+    "pk": 2,
+    "fields": {
+        "project_type": "Penetration Test"
+    }
+  },
+  {
+    "model": "catalog.projecttype",
+    "pk": 3,
+    "fields": {
+        "project_type": "Phishing Assessment"
+    }
+  },
+  {
+    "model": "catalog.healthstatus",
+    "pk": 1,
+    "fields": {
+        "health_status": "Healthy"
+    }
+  },
+  {
+    "model": "catalog.healthstatus",
+    "pk": 2,
+    "fields": {
+        "health_status": "Burned"
+    }
+  },
+  {
+    "model": "catalog.healthstatus",
+    "pk": 3,
+    "fields": {
+        "health_status": "Questionable"
+    }
+  },
+  {
+    "model": "catalog.domainstatus",
+    "pk": 1,
+    "fields": {
+        "domain_status": "Available"
+    }
+  },
+  {
+    "model": "catalog.domainstatus",
+    "pk": 2,
+    "fields": {
+        "domain_status": "Unavailable"
+    }
+  },
+  {
+    "model": "catalog.domainstatus",
+    "pk": 3,
+    "fields": {
+        "domain_status": "Reserved"
+    }
+  },
+  {
+    "model": "catalog.domainstatus",
+    "pk": 4,
+    "fields": {
+        "domain_status": "Burned"
+    }
+  }
+]

@@ -1,0 +1,137 @@
+{% extends "base_generic.html" %}
+
+{% block pagetitle %}{{ domain.name }} details{% endblock %}
+
+{% block content %}
+    <h2>{{ domain.name }}</h2>
+    <p style="font-size: 15px">
+        {% load check_group %}
+        {% if request.user|has_group:"Senior Operators" %}
+            <a href="{% url 'domain_update' domain.id %}">[Edit]</a>
+            <a href="#">  [Reserve]</a>
+        {% endif %}
+    </p>
+    <div style="margin-left:20px;margin-top:20px">
+        <br /><br />
+        <h4>Current Status</h4>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Health</th>
+                <th>DNS Health</th>
+                <th>Whois Privacy</th>
+                <th>Age</th>
+                <th>Notes</th>
+            </tr>
+            <tr>
+                {% if domain.domain_status.domain_status == "Available" %}
+                    <td style="color: green">{{ domain.domain_status }}</td>
+                {% else %}
+                    <td style="color: red">{{ domain.domain_status }}</td>
+                {% endif %}
+
+                {% if domain.health_status.health_status == "Healthy" %}
+                    <td style="color: green">{{ domain.health_status }}</td>
+                    {% else %}
+                    <td style="color: red">{{ domain.health_status }}</td>
+                {% endif %}
+
+                {% ifequal domain.health_dns "Healthy" %}
+                    <td style="color: green">{{ domain.health_dns }}</td>
+                {% else %}
+                    <td style="color: red">{{ domain.health_dns }}</td>
+                {% endifequal %}
+
+                {% ifequal domain.whois "Enabled" %}
+                    <td style="color: green">{{ domain.whois }}</td>
+                {% else %}
+                    <td style="color: red">{{ domain.whois }}</td>
+                {% endifequal %}
+
+                <td>{{ domain.get_domain_age }} days</td>
+                <td>{{ domain.note }}</td>
+            </tr>
+        </table>
+        <br /><br />
+
+        {% if domain.burned_explanation %}
+            <h4>Health Explanation</h4>
+            <table>
+                <tr>
+                    <th>Reasons</th>
+                </tr>
+                <tr>
+                    <td>{{ domain.burned_explanation }}</td>
+                </tr>
+            </table>
+        {% endif %}
+
+        <h4>DNS Records</h4>
+        <table>
+            <tr>
+                <th>Records</th>
+            </tr>
+            {% for record in domain.get_list %}
+            <tr>
+                <td>{{ record }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <br /><br />
+        <h4>Categories</h4>
+        <table>
+            <tr>
+                <th>All Categories</th>
+                <th>IBM X-Force</th>
+                <th>Cisco Talos</th>
+                <th>Bluecoat</th>
+                <th>Fortiguard</th>
+                <th>OpeDNS</th>
+                <th>TrendMicro</th>
+                <th>MX Toolbox</th>
+            </tr>
+            <tr>
+                <td>{{ domain.all_cat }}</td>
+                <td>{{ domain.ibm_xforce_cat }}</td>
+                <td>{{ domain.talos_cat }}</td>
+                <td>{{ domain.bluecoat_cat }}</td>
+                <td>{{ domain.fortiguard_cat }}</td>
+                <td>{{ domain.opendns_cat }}</td>
+                <td>{{ domain.trendmicro_cat }}</td>
+                <td>{{ domain.mx_toolbox_status }}</td>
+            </tr>
+        </table>
+
+        <br /><br />
+        <h4>Project History</h4>
+        {% if domain.history_set.all %}
+            <table>
+                <tr>
+                    <th>Client</th>
+                    <th>Activity Type</th>
+                    <th>Project Type</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Operator</th>
+                    <th>Note</th>
+                    <th style="text-align:center">Edit</th>
+                </tr>
+                {% for project in domain.history_set.all %}
+                    <tr>
+                        <td>{{ project.client }}</td>
+                        <td>{{ project.activity_type }}</td>
+                        <td>{{ project.project_type }}</td>
+                        <td>{{ project.start_date }}</td>
+                        <td>{{ project.end_date }}</td>
+                        <td>{{ project.operator }}</td>
+                        <td>{{ project.note }}</td>
+                        <td style="text-align:center"><a href="{% url 'history_update' project.id %}" class="button">Edit</a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>This domain has no history.</p>
+        {% endif %}
+        </div>
+{% endblock %}

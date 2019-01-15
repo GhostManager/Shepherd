@@ -1,0 +1,44 @@
+{% extends "base_generic.html" %}
+
+{% block pagetitle %}Domain Update Control Panel{% endblock %}
+
+{% block content %}
+    <!-- Action -->
+    <h2>Domain Updates</h2>
+    <p>An update for the domain health statuses and categories was last requested on:</p>
+    <p style="font-size:20px;padding: 10 10 10 10">
+        <strong>{{ last_update_requested }}</strong>
+    </p>
+    {% if last_update_completed %}
+        {% if last_update_completed == 'Failed' %}
+            <p>Request Status: <strong style="color: red">{{ last_update_completed }}</strong></p>
+            {% if last_result %}
+                <div style="border: 1px solid black;width: 50%; margin: 0 auto">
+                    <strong>Error: </strong>
+                    <em style="color: red">
+                        {{ last_result }}
+                    </em>
+                </div>
+            {% endif %}
+        {% else %}
+            {% if last_update_completed %}
+                <p>Request Status: <strong style="color: green"> Completed on {{ last_update_completed }} in {{ last_update_time }} minutes</strong></p>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    <p style="Padding-top:20px">Click the button to commence a new update. Note that updates will require <em>at least</em> <strong><u>{{ update_time }}</u></strong> minutes ({{ total_domains }} domains * {{ sleep_time }} second sleep configured in settings).</p>
+    <form action="{% url 'update' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" id="user_id" name="user_id" value='{{ user.get_username }}'>
+        <button class="button">Start Update</button>
+    </form>
+
+    <!-- Section for Flash Messages -->
+    {% if messages %}
+        <div class="messages" style="margin-top: 20px">
+            {% for message in messages %}
+                <p {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+    </div>
+    {% endif %}
+{% endblock %}

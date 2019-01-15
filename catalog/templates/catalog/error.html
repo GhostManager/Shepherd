@@ -1,0 +1,9 @@
+{% extends "base_generic.html" %}
+
+{% block pagetitle %}Error{% endblock %}
+
+{% block content %}
+    <p>We encountered an error:</p>
+    <p class="text-danger">{{ error_message }}</p>
+    <a href="/">Return to home?</a>
+{% endblock %}
