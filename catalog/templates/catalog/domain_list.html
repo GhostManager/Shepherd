@@ -39,10 +39,10 @@
                         <td style="color: red">{{ domain.health_dns }}</td>
                     {% endifequal %}
 
-                    {% ifequal domain.whois "Enabled" %}
-                        <td style="color: green">{{ domain.whois }}</td>
+                    {% ifequal domain.whois_status.whois_status "Enabled" %}
+                        <td style="color: green">{{ domain.whois_status }}</td>
                     {% else %}
-                        <td style="color: red">{{ domain.whois }}</td>
+                        <td style="color: red">{{ domain.whois_status }}</td>
                     {% endifequal %}
 
                     <td>{{ domain.creation }}</td>

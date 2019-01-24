@@ -41,7 +41,7 @@ If you have a paid VirusTotal license and are not subject to the 4 requests per 
 
 There is also a `SLACK_CONFIG` settings dictionary. If you have, or can get, a Slack Incoming Webhook you can configure that here to receive some messages when tasks are completed or domains are burned.
 
-You can set a username and emoji for the bot. Emojis must be set using lack syntax like `:sheep:`. The username can be anything you could use for a Slack username. The emoji will appear as the bot's avatar in channels.
+You can set a username and emoji for the bot. Emojis must be set using Slack syntax like `:sheep:`. The username can be anything you could use for a Slack username. The emoji will appear as the bot's avatar in channels.
 
 The alert target is the message target. You can set this to a blank string, e.g. `''`, but it's mostly useful for targeting users, aliases, or @here/@channel. They must be written as `<!here>`, `<!channel>`, or `<@username>` for them to work as actual notification keywords.
 
@@ -57,7 +57,7 @@ Next, the database tables must be migrated. This configures all of Shepherd's da
 
 To setup the database run: `python3 manage.py migrate`
 
-Assuming that completed successfully, you need to pre-populate a few of Shepherd's database models with some data. These are just some basic domain statuses and project types. You can add your own as desired later:
+Assuming that completed successfully, you need to pre-populate a few of Shepherd's database models with some data. These are just some basic domain statuses and project types. You can add your own as desired later.
 
 To initiate settings run: `python3 manage.py loaddata catalog/fixtures/initial_values.json`
 
@@ -91,9 +91,11 @@ Only mark users as "Staff" if you want them to be able to access the Django admi
 
 ### Start Django Q and Redis
 
-Once you are ready to actually use Shepherd start your Redis server. You also need to start Djano Q's `qcluster` which will need to be done using another terminal window with manage.py, just like starting the server.
+Once you are ready to actually use Shepherd start your Redis server. You also need to start Django Q's `qcluster` which will need to be done using another terminal window with manage.py, just like starting the server.
 
 Run this: `python3 manage.py qcluster`
+
+If Redis is running on a different server, you changed the port, or made some other modification, you will need to update the Redis configuration in settings.py. You could also switch to a different broker if you already have some other broker setup and would prefer to use it for Shepherd. Check Django Q's documentation to make the changes in settings.py to switch to Rabbit MQ, Amazon SQS, or whatever else you might be using.
 
 ### Schedule Tasks
 
@@ -101,8 +103,8 @@ Visit the Django Q database from the admin panel and check the Scheduled tasks. 
 
 ## Notes on Health
 
-Shepherd grades a domain's health as Healthy or Burned. Health is reported as an overall health grade and a grade for the domain's DNS. You will almost certainly see a `Healthy` domain with questionable DNS. This is not something to be worried about without some human investigation. The DNS is based on VirusTotal's passive DNS report and checking to see if the IP addresses have appeared in any threat reports. If you bought an expired domain it's not at all strange to learn it once pointed at a cloud IP address that was at point flagged for something naughty.
+Shepherd grades a domain's health as Healthy or Burned. Health is reported as an overall health grade and a separate grade for the domain's DNS. You will almost certainly see a `Healthy` domain with questionable DNS. This is not something to be worried about without some human investigation. The DNS is based on VirusTotal's passive DNS report and checking to see if the IP addresses have appeared in any threat reports. If you bought an expired domain it's not at all strange to learn it once pointed at a cloud IP address that was flagged for something naughty at some point.
 
 Check to see if the IP addresses in question are yours. If they are not then you can probably ignore this. If the IP address was flagged very recently, like just before you bought the domain, then that may be a concern because the domain may be flagged for recent malicious activity.  There's a lot of "maybes" here because this is very much an imperfect grade.
 
-In general, focus on the overall health status and use passive DNS to help with manual analysis of your domains.
+In general, focus on the overall health status (based on categories) and just use the passive DNS information and flags to help with manual analysis of your domains.
