@@ -32,7 +32,7 @@ from django.conf import settings
 from django.db.models import Q
 from django.urls import reverse
 from catalog.forms import CheckoutForm, DomainCreateForm
-from catalog.models import Domain, HealthStatus, DomainStatus, ActivityType, ProjectType, Client, History, User
+from catalog.models import Domain, HealthStatus, DomainStatus, WhoisStatus, Client, History, User
 
 # Import the Django-Q models
 from django_q.models import Success, Task
@@ -214,16 +214,29 @@ def upload_csv(request):
         # Process each csv row and commit it to the database
         for entry in csv_reader:
             logging.getLogger('error_logger').info("Adding %s to the database", entry['name'])
-            # Format dates into the format Django expects them, YYYY-MM-DD
-            # TODO: Either change DomainCheck to save dates like this or figure out how to save these a different way
-            entry['creation'] = datetime.datetime.strptime(entry['creation'], '%m/%d/%Y').strftime('%Y-%m-%d')
-            entry['expiration'] = datetime.datetime.strptime(entry['expiration'], '%m/%d/%Y').strftime('%Y-%m-%d')
+            # Try to format dates into the format Django expects them, YYYY-MM-DD
+            # This just catches the other common format, MM-DD-YYYY
+            # Other date formats will be missed and the user will see an error message after it fails to commit
+            try:
+                entry['creation'] = datetime.datetime.strptime(entry['creation'], '%m-%d-%Y').strftime('%Y-%m-%d')
+            except:
+                pass
+            try:
+                entry['expiration'] = datetime.datetime.strptime(entry['expiration'], '%m-%d-%Y').strftime('%Y-%m-%d')
+            except:
+                pass
             # Try to resolve the user-defined health_status value or default to `Healthy`
             try:
                 health_status = HealthStatus.objects.get(health_status__iexact=entry['domain_status'])
             except:
                 health_status = HealthStatus.objects.get(health_status='Healthy')
             entry['health_status'] = health_status
+            # Try to resolve the user-defined whois_status value or default to `Enabled` as it usually is
+            try:
+                whois_status = WhoisStatus.objects.get(whois_status__iexact=entry['whois_status'])
+            except:
+                whois_status = WhoisStatus.objects.get(whois_status='Enabled')
+            entry['whois_status'] = whois_status
             # Check if the optional note field is in the csv and add it as NULL if not
             if not 'note' in entry:
                 entry['note'] = None
@@ -249,10 +262,11 @@ def upload_csv(request):
             # If there is an error, store as string and then display
             except Exception as e:
                 logging.getLogger('error_logger').error(repr(e))
-                pass
+                messages.error(request, 'Issue processing data for ' + repr(entry['name']) + ': ' + repr(e))
+                return HttpResponseRedirect(reverse('upload_csv'))
     except Exception as e:
-        logging.getLogger('error_logger').error('Unable to read rows. ' + repr(e))
-        messages.error(request, 'Unable to read rows. ' + repr(e))
+        logging.getLogger('error_logger').error('Unable to read rows: ' + repr(e))
+        messages.error(request, 'Unable to read rows: ' + repr(e))
     return HttpResponseRedirect(reverse('upload_csv'))
 
 @login_required
