@@ -20,8 +20,8 @@ Do this:
 
 1. Run: `pip3 install --user pipenv` or `python3 -m pip install --user pipenv`
 2. Run: `git clone https://github.com/GhostManager/Shepherd.git`
-3. Run: cd ODIN && pipenv install
-4. Start using ODIN by running: pipenv shell
+3. Run: cd Shepherd && pipenv install
+4. Start using Shepherd by running: pipenv shell
 
 ### Adjusting Settings.py
 
