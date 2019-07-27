@@ -17,7 +17,7 @@ class HealthStatus(models.Model):
         ordering = ['health_status']
         verbose_name = 'Health status'
         verbose_name_plural = 'Health statuses'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.health_status
@@ -32,7 +32,7 @@ class DomainStatus(models.Model):
         ordering = ['domain_status']
         verbose_name = 'Domain status'
         verbose_name_plural = 'Domain statuses'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.domain_status
@@ -47,7 +47,7 @@ class WhoisStatus(models.Model):
         ordering = ['whois_status']
         verbose_name = 'WHOIS status'
         verbose_name_plural = 'WHOIS statuses'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.whois_status
@@ -62,7 +62,7 @@ class ActivityType(models.Model):
         ordering = ['activity']
         verbose_name = 'Domain activity'
         verbose_name_plural = 'Domain activities'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.activity
@@ -77,7 +77,7 @@ class ProjectType(models.Model):
         ordering = ['project_type']
         verbose_name = 'Project type'
         verbose_name_plural = 'Project types'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.project_type
@@ -95,7 +95,7 @@ class Client(models.Model):
         ordering = ['name']
         verbose_name = 'Client'
         verbose_name_plural = 'Clients'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.name
@@ -109,7 +109,7 @@ class Domain(models.Model):
     The availability and health statuses are Foreign Keys.
     """
     name = models.CharField('Name', max_length=100, unique=True, help_text='Enter a domain name')
-    registrar = models.CharField('Registrar', max_length=100, unique=True, help_text='Enter the name of the registrar where this domain is registered', null=True)
+    registrar = models.CharField('Registrar', max_length=100, help_text='Enter the name of the registrar where this domain is registered', null=True)
     dns_record = models.CharField('DNS Record', max_length=500, help_text='Enter domain DNS records', null=True)
     health_dns = models.CharField('DNS Health', max_length=100, help_text='Domain health status based on passive DNS (e.g. Healthy, Burned)', null=True)
     creation = models.DateField('Purchase Date', help_text='Domain purchase date')
@@ -154,7 +154,7 @@ class Domain(models.Model):
             return self.dns_record.split(' ::: ')
         else:
             None
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return f'{self.name} ({self.health_status})'
