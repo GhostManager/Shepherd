@@ -17,7 +17,7 @@ class HealthStatus(models.Model):
         ordering = ['health_status']
         verbose_name = 'Health status'
         verbose_name_plural = 'Health statuses'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.health_status
@@ -32,7 +32,7 @@ class DomainStatus(models.Model):
         ordering = ['domain_status']
         verbose_name = 'Domain status'
         verbose_name_plural = 'Domain statuses'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.domain_status
@@ -47,7 +47,7 @@ class WhoisStatus(models.Model):
         ordering = ['whois_status']
         verbose_name = 'WHOIS status'
         verbose_name_plural = 'WHOIS statuses'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.whois_status
@@ -62,7 +62,7 @@ class ActivityType(models.Model):
         ordering = ['activity']
         verbose_name = 'Domain activity'
         verbose_name_plural = 'Domain activities'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.activity
@@ -77,7 +77,7 @@ class ProjectType(models.Model):
         ordering = ['project_type']
         verbose_name = 'Project type'
         verbose_name_plural = 'Project types'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.project_type
@@ -95,7 +95,7 @@ class Client(models.Model):
         ordering = ['name']
         verbose_name = 'Client'
         verbose_name_plural = 'Clients'
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return self.name
@@ -109,25 +109,25 @@ class Domain(models.Model):
     The availability and health statuses are Foreign Keys.
     """
     name = models.CharField('Name', max_length=100, unique=True, help_text='Enter a domain name')
-    registrar = models.CharField('Registrar', max_length=100, unique=True, help_text='Enter the name of the registrar where this domain is registered', null=True)
-    dns_record = models.CharField('DNS Record', max_length=500, help_text='Enter domain DNS records', null=True)
-    health_dns = models.CharField('DNS Health', max_length=100, help_text='Domain health status based on passive DNS (e.g. Healthy, Burned)', null=True)
+    registrar = models.CharField('Registrar', max_length=100, help_text='Enter the name of the registrar where this domain is registered', null=True, blank=True)
+    dns_record = models.CharField('DNS Record', max_length=500, help_text='Enter domain DNS records', null=True, blank=True)
+    health_dns = models.CharField('DNS Health', max_length=100, help_text='Domain health status based on passive DNS (e.g. Healthy, Burned)', null=True, blank=True)
     creation = models.DateField('Purchase Date', help_text='Domain purchase date')
     expiration = models.DateField('Expiration Date', help_text='Domain expiration date')
-    all_cat = models.TextField('All Categories', help_text='All categories applied to this domain', null=True)
-    ibm_xforce_cat = models.CharField('IBM X-Force', max_length=100, help_text='Domain category as determined by IBM X-Force', null=True)
-    talos_cat = models.CharField('Cisco Talos', max_length=100, help_text='Domain category as determined by Cisco Talos', null=True)
-    bluecoat_cat =models.CharField('Bluecoat', max_length=100, help_text='Domain category as determined by Bluecoat', null=True)
-    fortiguard_cat = models.CharField('Fortiguard', max_length=100, help_text='Domain category as determined by Fortiguard', null=True)
-    opendns_cat = models.CharField('OpenDNS', max_length=100, help_text='Domain category as determined by OpenDNS', null=True)
-    trendmicro_cat = models.CharField('TrendMicro', max_length=100, help_text='Domain category as determined by TrendMicro', null=True)
-    mx_toolbox_status =  models.CharField('MX Toolbox Status', max_length=100, help_text='Domain spam status as determined by MX Toolbox', null=True)
-    note = models.TextField('Notes', help_text='Domain-related notes, such as thoughts behind its purchase or how/why it was burned or retired', null=True)
-    burned_explanation = models.TextField('Health Explanation', help_text='Reasons why the domain\'s health status is not "Healthy"', null=True)
+    all_cat = models.TextField('All Categories', help_text='All categories applied to this domain', null=True, blank=True)
+    ibm_xforce_cat = models.CharField('IBM X-Force', max_length=100, help_text='Domain category as determined by IBM X-Force', null=True, blank=True)
+    talos_cat = models.CharField('Cisco Talos', max_length=100, help_text='Domain category as determined by Cisco Talos', null=True, blank=True)
+    bluecoat_cat =models.CharField('Bluecoat', max_length=100, help_text='Domain category as determined by Bluecoat', null=True, blank=True)
+    fortiguard_cat = models.CharField('Fortiguard', max_length=100, help_text='Domain category as determined by Fortiguard', null=True, blank=True)
+    opendns_cat = models.CharField('OpenDNS', max_length=100, help_text='Domain category as determined by OpenDNS', null=True, blank=True)
+    trendmicro_cat = models.CharField('TrendMicro', max_length=100, help_text='Domain category as determined by TrendMicro', null=True, blank=True)
+    mx_toolbox_status =  models.CharField('MX Toolbox Status', max_length=100, help_text='Domain spam status as determined by MX Toolbox', null=True, blank=True)
+    note = models.TextField('Notes', help_text='Domain-related notes, such as thoughts behind its purchase or how/why it was burned or retired', null=True, blank=True)
+    burned_explanation = models.TextField('Health Explanation', help_text='Reasons why the domain\'s health status is not "Healthy"', null=True, blank=True)
     # Foreign Keys
-    whois_status = models.ForeignKey('WhoisStatus', on_delete=models.PROTECT, null=True)
-    health_status = models.ForeignKey('HealthStatus', on_delete=models.PROTECT, null=True)
-    domain_status = models.ForeignKey('DomainStatus', on_delete=models.PROTECT, null=True)
+    whois_status = models.ForeignKey('WhoisStatus', on_delete=models.PROTECT, null=True, blank=True)
+    health_status = models.ForeignKey('HealthStatus', on_delete=models.PROTECT, null=True, blank=True)
+    domain_status = models.ForeignKey('DomainStatus', on_delete=models.PROTECT, null=True, blank=True)
     last_used_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
@@ -154,7 +154,7 @@ class Domain(models.Model):
             return self.dns_record.split(' ::: ')
         else:
             None
-    
+
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
         return f'{self.name} ({self.health_status})'
@@ -168,8 +168,8 @@ class History(models.Model):
     # This field is automatically filled with the current date at check-out
     start_date = models.DateField('Start Date', auto_now_add=True, max_length=100, help_text='Enter the start date of the project')
     end_date = models.DateField('End Date', max_length=100, help_text='Enter the end date of the project')
-    note = models.TextField('Notes', help_text='Project-related notes, such as how the domain will be used/how it worked out', null=True)
-    slack_channel =  models.CharField('Project Slack Channel', max_length=100, help_text='Name of the Slack channel to be used for updates for this domain during the project\'s duration', null=True)
+    note = models.TextField('Notes', help_text='Project-related notes, such as how the domain will be used/how it worked out', null=True, blank=True)
+    slack_channel =  models.CharField('Project Slack Channel', max_length=100, help_text='Name of the Slack channel to be used for updates for this domain during the project\'s duration', null=True, blank=True)
     # Foreign Keys
     client = models.ForeignKey('Client', on_delete=models.CASCADE, null=False)
     domain = models.ForeignKey('Domain', on_delete=models.CASCADE, null=False)
