@@ -16,7 +16,7 @@ class DateInput(forms.DateInput):
 
 class CheckoutForm(forms.Form):
     """Form used for domain checkout. Updates the domain (status) and creates a project entry."""
-    client = forms.CharField(help_text='Enter a name for the client.')
+    client = forms.ModelChoiceField(queryset=Client.objects.all(), to_field_name='name', help_text='Select the client.')
     start_date = forms.DateField(help_text='Select a start date for the project.')
     end_date = forms.DateField(help_text='Select an end  date for the project.')
     project_type = forms.ModelChoiceField(queryset=ProjectType.objects.all(), to_field_name='project_type', help_text='Select the type of project.')
