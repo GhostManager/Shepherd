@@ -190,7 +190,7 @@ class History(models.Model):
 
     def __str__(self):
         """String for representing the model object (in Admin site etc.)."""
-        return f'{self.client} {self.project.project_type} - {self.domain.name} ({self.activitytype.activity}) {self.start_date} to {self.end_date} - {self.operator}'
+        return f'{self.client} {self.project_type.project_type} - {self.domain.name} ({self.activity_type.activity}) {self.start_date} to {self.end_date} - {self.operator}'
 
     @property
     def is_overdue(self):
