@@ -1,6 +1,6 @@
 version: '3'
 services:
-  app:
+  django:
     build: .
     container_name: shepherd-domains
     command: ["gunicorn", "shepherd.wsgi", "-b", "0.0.0.0:8000", "--reload"]
@@ -12,12 +12,14 @@ services:
     - DB_PASSWORD=shepard123
     networks:
     - shepard
-    ports:
-    - 8001:8000
+    # ports:
+    # - 8001:8000
 
   cluster:
     image: shepherd-domains
     command: ["python", "manage.py", "qcluster"]
+    depends_on:
+    - django
     volumes:
     - ./:/src:ro
     - static:/static
@@ -33,7 +35,7 @@ services:
     environment:
       - PORT=8000
     ports:
-      - 8000:80
+      - 8001:80
     networks:
     - shepard
     volumes:
