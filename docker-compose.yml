@@ -1,0 +1,64 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: shepherd-domains
+    command: ["gunicorn", "shepherd.wsgi", "-b", "0.0.0.0:8000", "--reload"]
+    volumes:
+    - ./:/src:ro
+    - static:/static
+    - media:/media
+    environment:
+    - DB_PASSWORD=shepard123
+    networks:
+    - shepard
+    ports:
+    - 8001:8000
+
+  cluster:
+    image: shepherd-domains
+    command: ["python", "manage.py", "qcluster"]
+    volumes:
+    - ./:/src:ro
+    - static:/static
+    - media:/media
+    environment:
+    - DB_PASSWORD=shepard123
+    networks:
+    - shepard
+
+
+  caddy:
+    image: lgatica/django-caddy:latest
+    environment:
+      - PORT=8000
+    ports:
+      - 8000:80
+    networks:
+    - shepard
+    volumes:
+      - static:/var/www/static
+      - media:/var/www/media
+      - logs:/var/log
+
+  redis:
+    image: redis
+    networks:
+    - shepard
+
+  db:
+    image: postgres:alpine
+    environment:
+    - POSTGRES_PASSWORD=shepard123
+    volumes:
+    - ./data/psql:/var/lib/postgresql/data
+    networks:
+    - shepard
+
+volumes:
+  static:
+  media:
+  logs:
+
+networks:
+  shepard:
