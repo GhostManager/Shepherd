@@ -1,0 +1,15 @@
+django
+django-q
+redis
+bs4
+cymon
+lxml
+pillow
+pytesseract
+requests
+dnspython
+whitenoise
+pylint
+psycopg2-binary
+
+gunicorn
