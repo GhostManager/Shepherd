@@ -2,6 +2,15 @@
 
 [![Python Version](https://img.shields.io/badge/Python-3.7-brightgreen.svg)](.) [![License](https://img.shields.io/badge/License-BSD3-darkred.svg)](.)
 
+> **_NOTE:_**  This project has been archived! I started working on some ideas for domain management in 2018. In January 2019,
+> I released Shepherd as a proof-of-concept web application for managing domains with a UI. Shepherd was a success, but
+> it became clear there was so much more potential for red team management and reporting. I learned much about Django with
+> this project, so I started fresh and rebuilt Shepherd as a sub-application of [Ghostwriter](https://github.com/GhostManager/Ghostwriter).
+> The project lives on there!
+> 
+> If you are interested in the original Shepherd, it is still available here as an artifact. I will not be updating it
+> and the project is now read-only.
+
 ![Shepherd](https://github.com/GhostManager/Shepherd/raw/master/Shepherd.jpg)
 
 Shepherd is a Django application written in Python 3.7 and is designed to be used by a team of operators. It keeps track of domain names and each domain's current DNS settings, categorization, project history, and status. The tracked statuses include which domains are: ready to be used, burned/retired, or in use, and which team member checked out each of the active domains.
